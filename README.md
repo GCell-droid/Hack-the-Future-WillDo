@@ -72,6 +72,9 @@ This will start a Flask server where you can interact with the model.
 - 🖐️ Real-time hand gesture detection
 - 📝 Text conversion of sign language
 - 🔊 Speech output for better communication
+## 🎯 Accuracy
+![alt text](accuracy1.png)
+![alt text](accuracy2.png)
 
 ## 🚀 Deployment
 The model can be deployed using Flask and Ngrok for online access.
@@ -82,4 +85,3 @@ The model can be deployed using Flask and Ngrok for online access.
 - Nitesh Parihar
 - Siddharth Nimbalakar
 - Arpita
-
