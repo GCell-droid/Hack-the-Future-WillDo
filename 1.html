@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Translator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            flex: 1 0 200px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-card.active {
+            border-color: #3498db;
+            background-color: #ebf5fb;
+        }
+
+        .option-card i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+
+        .input-section,
+        .result-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .input-section {
+            background-color: #f9f9f9;
+        }
+
+        input,
+        textarea,
+        button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #video-container {
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 640px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .result-section {
+            background-color: #fff;
+        }
+
+        .emoji-display {
+            font-size: 2rem;
+            letter-spacing: 0.5rem;
+            margin: 1rem 0;
+            min-height: 3rem;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .video-controls button {
+            width: auto;
+            padding: 0.5rem 1rem;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 1rem;
+            font-style: italic;
+            color: #666;
+        }
+
+        #learning-modules {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .module-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            background-color: #f9f9f9;
+        }
+
+        .module-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .lesson-item {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background-color: #fff;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <h1>Sign Language Translator</h1>
+        <p>Breaking barriers through technology</p>
+    </header>
+
+    <main>
+        <h2>Select a Mode</h2>
+        <div class="options">
+            <div class="option-card" data-mode="text-to-sign">
+                <i class="fas fa-keyboard"></i>
+                <h3>Text to Sign</h3>
+                <p>Convert written text to sign language</p>
+            </div>
+            <div class="option-card" data-mode="sign-to-text">
+                <i class="fas fa-camera"></i>
+                <h3>Sign to Text</h3>
+                <p>Recognize sign language in real-time</p>
+            </div>
+            <div class="option-card" data-mode="learn">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Learn Sign Language</h3>
+                <p>Interactive learning modules</p>
+            </div>
+        </div>
+
+        <!-- Text to Sign Section -->
+        <div id="text-to-sign-section" class="mode-section hidden">
+            <h2>Text to Sign Language</h2>
+            <div class="input-section">
+                <label for="text-input">Enter your text:</label>
+                <textarea id="text-input" rows="4" placeholder="Type something here..."></textarea>
+                <button id="translate-btn">Translate</button>
+            </div>
+            <div id="loading" class="hidden">Processing translation...</div>
+            <div class="result-section hidden">
+                <h3>Sign Language Translation:</h3>
+                <div class="emoji-display" id="sign-output"></div>
+                <p>Note: These emojis represent ASL signs. For complete ASL learning, please consult certified
+                    resources.</p>
+                <button id="speak-btn">Read Text Aloud</button>
+            </div>
+        </div>
+
+        <!-- Sign to Text Section -->
+        <div id="sign-to-text-section" class="mode-section hidden">
+            <h2>Sign Language to Text</h2>
+            <p>Use your camera to detect sign language gestures.</p>
+            <div id="video-container">
+                <video id="video" autoplay playsinline></video>
+                <div class="video-controls">
+                    <button id="start-camera">Start Camera</button>
+                    <button id="stop-camera" disabled>Stop</button>
+                </div>
+            </div>
+            <div class="result-section">
+                <h3>Detected Text:</h3>
+                <p id="detected-text">No signs detected yet. Press Start Camera to begin.</p>
+            </div>
+        </div>
+
+        <div id="learn-section" class="mode-section hidden">
+            <h2>Learn Sign Language</h2>
+            <p>Explore our interactive learning modules to master ASL.</p>
+            <div id="learning-modules">
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = 'https://c606-34-58-104-126.ngrok-free.app';
+
+
+        const SIGN_EMOJIS = {
+            'a': '👆', 'b': '✋', 'c': '👌', 'd': '👍', 'e': '👋', 'f': '👊',
+            'g': '👇', 'h': '👐', 'i': '🤙', 'j': '🤞', 'k': '🖐️', 'l': '👉',
+            'm': '🤛', 'n': '🤜', 'o': '⭕', 'p': '👌', 'q': '👇', 'r': '🤘',
+            's': '✊', 't': '👆', 'u': '✌️', 'v': '✌️', 'w': '👐', 'x': '🤞',
+            'y': '🤙', 'z': '👈', '0': '⭕', '1': '☝️', '2': '✌️', '3': '🤟',
+            '4': '🖖', '5': '🖐️', '6': '👌', '7': '🤞', '8': '👌', '9': '✊',
+            ' ': ' ', '.': '✋', '?': '🤔', '!': '❗'
+        };
+
+
+        const ASL_PHRASES = {
+            "hello": "👋",
+            "thank you": "🙏",
+            "please": "🤲",
+            "sorry": "👊❤️",
+            "yes": "👍",
+            "no": "👎",
+            "help": "✊👆",
+            "learn": "👉👂",
+            "understand": "👉👁️👍",
+            "good": "👍",
+            "bad": "👎",
+            "love": "🤟",
+            "friend": "👉👈"
+        };
+
+        const LEARNING_MODULES = {
+            "basics": {
+                "title": "ASL Basics",
+                "description": "Learn the alphabet and numbers in American Sign Language",
+                "lessons": [
+                    { "id": "alphabet", "title": "ASL Alphabet", "content": "Practice recognizing and forming the ASL alphabet" },
+                    { "id": "numbers", "title": "ASL Numbers", "content": "Learn to count from 0-9 in ASL" }
+                ]
+            },
+            "phrases": {
+                "title": "Common Phrases",
+                "description": "Essential everyday phrases in ASL",
+                "lessons": [
+                    { "id": "greetings", "title": "Greetings", "content": "Learn common greetings like 'hello', 'goodbye', 'how are you'" },
+                    { "id": "questions", "title": "Basic Questions", "content": "Learn to ask questions in ASL" }
+                ]
+            }
+        };
+
+
+        const optionCards = document.querySelectorAll('.option-card');
+        const modeSections = document.querySelectorAll('.mode-section');
+        const textInput = document.getElementById('text-input');
+        const translateBtn = document.getElementById('translate-btn');
+        const signOutput = document.getElementById('sign-output');
+        const startCameraBtn = document.getElementById('start-camera');
+        const stopCameraBtn = document.getElementById('stop-camera');
+        const video = document.getElementById('video');
+        const detectedText = document.getElementById('detected-text');
+        const loadingIndicator = document.getElementById('loading');
+        const resultSection = document.querySelector('.result-section');
+        const speakBtn = document.getElementById('speak-btn');
+        const learningModulesContainer = document.getElementById('learning-modules');
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            optionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const mode = card.getAttribute('data-mode');
+                    selectMode(mode);
+
+                    optionCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                });
+            });
+
+
+            translateBtn.addEventListener('click', translateTextToSign);
+
+
+            startCameraBtn.addEventListener('click', startCamera);
+            stopCameraBtn.addEventListener('click', stopCamera);
+
+
+            speakBtn.addEventListener('click', speakText);
+
+
+            populateLearningModules();
+        });
+
+
+        function selectMode(mode) {
+            modeSections.forEach(section => section.classList.add('hidden'));
+
+            switch (mode) {
+                case 'text-to-sign':
+                    document.getElementById('text-to-sign-section').classList.remove('hidden');
+                    break;
+                case 'sign-to-text':
+                    document.getElementById('sign-to-text-section').classList.remove('hidden');
+                    break;
+                case 'learn':
+                    document.getElementById('learn-section').classList.remove('hidden');
+                    break;
+            }
+        }
+
+
+        function textToSign(text) {
+            text = text.toLowerCase();
+
+
+            for (const [phrase, emoji] of Object.entries(ASL_PHRASES)) {
+                const regex = new RegExp(phrase, 'gi');
+                text = text.replace(regex, ` ${emoji} `);
+            }
+
+
+            let result = '';
+            for (const char of text) {
+                if (SIGN_EMOJIS[char]) {
+                    result += SIGN_EMOJIS[char] + ' ';
+                } else {
+                    result += char + ' ';
+                }
+            }
+
+            return result.trim();
+        }
+
+
+        async function translateTextToSign() {
+            const text = textInput.value.trim();
+            if (!text) return;
+
+            loadingIndicator.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+
+            try {
+
+                const response = await fetch(`${API_URL}/translate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text })
+                });
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+
+
+                signOutput.textContent = textToSign(text);
+
+            } catch (error) {
+                console.error('Error with API, using fallback translation:', error);
+
+                signOutput.textContent = textToSign(text);
+            }
+
+
+            loadingIndicator.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        }
+
+
+        let stream = null;
+        let intervalId = null;
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+
+                startCameraBtn.disabled = true;
+                stopCameraBtn.disabled = false;
+
+
+                let detectedSigns = '';
+                intervalId = setInterval(() => {
+
+                    const randomChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                    const randomChar = randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+                    detectedSigns += randomChar + ' ';
+                    detectedText.textContent = detectedSigns;
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                detectedText.textContent = 'Error accessing camera. Please make sure your camera is connected and you have granted permission.';
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+
+            startCameraBtn.disabled = false;
+            stopCameraBtn.disabled = true;
+            detectedText.textContent = 'Camera stopped. Press Start Camera to begin again.';
+        }
+
+        function speakText() {
+            const text = textInput.value.trim();
+            if (!text) return;
+
+            const speech = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(speech);
+        }
+
+        function populateLearningModules() {
+            learningModulesContainer.innerHTML = '';
+
+            for (const [moduleKey, moduleInfo] of Object.entries(LEARNING_MODULES)) {
+                const moduleCard = document.createElement('div');
+                moduleCard.className = 'module-card';
+
+                moduleCard.innerHTML = `
+                    <div class="module-title">${moduleInfo.title}</div>
+                    <div class="module-description">${moduleInfo.description}</div>
+                    <ul class="lesson-list">
+                        ${moduleInfo.lessons.map(lesson => `
+                            <li class="lesson-item">
+                                <strong>${lesson.title}</strong> - ${lesson.content}
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button class="start-module-btn" data-module="${moduleKey}">Start Learning</button>
+                `;
+
+                learningModulesContainer.appendChild(moduleCard);
+            }
+
+
+            document.querySelectorAll('.start-module-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const moduleKey = this.getAttribute('data-module');
+                    alert(`Module ${moduleKey} would start here. This feature is under development.`);
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

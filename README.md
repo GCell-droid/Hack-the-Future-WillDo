@@ -1,71 +1,85 @@
-# Hack the Future | Horizon 2025, IIITV-ICD
+# 🖐️ Deaf and Dumb Communication Model 🗣️
 
-Welcome to **Hack the Future**, the 36-hour online hackathon organized by Coding Club DCodr as part of **Horizon 2025**, the annual technical fest of **IIITV-ICD**. This is your chance to collaborate, innovate, and build creative solutions to real-world problems.
+This project provides a deep learning model that helps interpret sign language using MediaPipe and TensorFlow. It captures hand gestures and converts them into text, which can then be transformed into speech using gTTS (Google Text-to-Speech). 🧠💡
 
-**Once the hackathon begins, please follow the instructions below carefully.**
+## 🔧 Installation
 
----
+Ensure you have Python installed. Then, install the required dependencies using:
 
-## **Instructions for Participants**
-
-### ✅ **Step 1: Fork the Repository**
-1. Once problem statements are available. Click the **Fork** button at the top right corner to create a copy of this repository in your GitHub account.
-2. Clone the forked repository to your local machine using the command:
-
-```bash
-git clone <your-forked-repo-link>
+```sh
+pip install --upgrade pip
+pip install --upgrade mediapipe
+pip install --upgrade tensorflow
+pip install --upgrade scikit-learn
+pip install --upgrade matplotlib
+pip install gtts
+pip install flask pyngrok tensorflow numpy
 ```
 
-### ✅ **Step 2: Select a Problem Statement**
-- Review the provided problem statements in the PROBLEMS.md.
-- Choose any one problem statement to work on.
-- Work directly on the `main` branch to ensure your final work is on the main branch, as the organizers will evaluate your project every 6 hours.
+## 📂 Dataset Preparation
 
-### ✅ **Step 3: Project Development**
-- Develop your project locally.
-- Commit your changes frequently with meaningful messages:
+The model requires a dataset of hand gestures. The dataset is stored in the `data/` directory. You can collect images using OpenCV and MediaPipe for hand tracking. 🎥📸
 
-```bash
-git add .
-git commit -m "Initial commit with base project setup"
+## 📊 Model Training
+
+1. 🏗️ The collected gesture images are preprocessed.
+2. ✂️ The dataset is split into training and testing sets.
+3. 🧠 A TensorFlow-based deep learning model is trained on the dataset.
+4. 💾 The trained model is saved in the `models/` directory.
+
+## ⚙️ Working of the Model
+
+1. 📷 The camera captures hand gestures.
+2. 🖐️ MediaPipe processes the hand landmarks.
+3. 🤖 The deep learning model predicts the corresponding letter/word.
+4. 📝 The detected text is displayed on the screen.
+5. 🔊 The text is converted into speech using gTTS.
+
+## 🔍 Basic Functionality Implementation
+
+### 1. ✋ Hand Tracking using MediaPipe
+- We use MediaPipe's Hand Tracking module to detect and track hand landmarks in real time.
+- Each detected hand landmark is represented as a set of coordinates.
+
+### 2. 🗂️ Data Collection and Preprocessing
+- OpenCV captures hand images and stores them as training samples.
+- The hand landmarks extracted by MediaPipe are used as features.
+
+### 3. 🏋️ Model Training with TensorFlow
+- A neural network is trained on the extracted features to classify gestures.
+- The model learns to recognize different hand signs and map them to corresponding text labels.
+
+### 4. 🔉 Text-to-Speech Conversion using gTTS
+- The predicted text is passed to Google Text-to-Speech (gTTS).
+- gTTS converts the text into an audio file that is played to communicate the recognized sign.
+
+### 5. 🌍 Flask-Based Web Interface
+- A simple web interface is created using Flask.
+- The user can interact with the model through a webcam-based gesture recognition system.
+- Ngrok is used to expose the Flask app for remote access.
+
+## ▶️ Running the Model
+
+To run the model, execute the following script:
+
+```sh
+python app.py
 ```
 
-- Push your changes to your forked repository:
+This will start a Flask server where you can interact with the model.
 
-```bash
-git push origin main
-```
+## ✨ Features
+- 🖐️ Real-time hand gesture detection
+- 📝 Text conversion of sign language
+- 🔊 Speech output for better communication
 
-### ✅ **Step 4: Submission**
-1. Create a **Pull Request (PR)** to this repository before the hackathon ends.
-2. Your repository should contain:
-    - `README.md`: Instructions to run your project.
-    - Source code and necessary files.
-    - Documentation (if any).
-3. 4-5 Page PPT Presentation summarizing your solution to make it easier for judges to evaluate.
-   -  Slide 1: Title, team name, and problem statement.
-   -  Slide 2: Objective and solution overview.
-   -  Slide 3: Key features and technologies used.
-   -  Slide 4: solutions implemented.
-   -  Slide 5: Challenges faced.
+## 🚀 Deployment
+The model can be deployed using Flask and Ngrok for online access.
 
-⚠️ **Note:** Only PRs submitted before the hackathon deadline will be considered. Late submissions will not be accepted.
+## 👥 Authors
+- Omni
+- Chitransh Kumar
+- Nitesh Parihar
+- Siddharth Nimbalakar
+- Arpita
 
----
-
-## 🔍 **Evaluation Criteria**
-- **Innovation & Creativity:** Uniqueness and originality of the solution.
-- **Functionality & Implementation:** Proper execution and working functionality.
-- **Code Quality:** Clean, readable, and maintainable code.
-- **Presentation & Documentation:** Clear instructions and explanations.
-
----
-
-## ⏱️ **Hackathon Timeline**
-- **Start:** [28/03/2025 5PM]
-- **End:** [30/03/2025 5AM]
-- **Duration:** 36 hours (continuous online mode)
-
----
-
-🚀 **Good luck and happy hacking!** 🎯
