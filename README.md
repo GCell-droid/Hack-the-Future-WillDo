@@ -1,4 +1,4 @@
-# 🖐️ Deaf and Dumb Communication Model 🗣️
+# 🖐️ Deaf and Dumb Interactive Learning Model 🗣️
 
 This project provides a deep learning model that helps interpret sign language using MediaPipe and TensorFlow. It captures hand gestures and converts them into text, which can then be transformed into speech using gTTS (Google Text-to-Speech). 🧠💡
 
@@ -74,14 +74,19 @@ This will start a Flask server where you can interact with the model.
 - 🔊 Speech output for better communication
 ## 🎯 Accuracy
 ![alt text](accuracy1.png)
-![alt text](accuracy2.png)
+
+# Outputs
+![output1](output1.jpg)
+![output2](output2.jpg)
+![output3](output3.jpg)
+![output4](output4.jpg)
 
 ## 🚀 Deployment
 The model can be deployed using Flask and Ngrok for online access.
 
 ## 👥 Authors
-- Omni
+- Arpita
 - Chitransh Kumar
 - Nitesh Parihar
-- Siddharth Nimbalakar
-- Arpita
+- Siddharth Nimbalkar
+- Omni Manwani
